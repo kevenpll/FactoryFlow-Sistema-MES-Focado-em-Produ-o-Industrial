@@ -56,7 +56,7 @@ async def ws_handler(websocket, path="/ws"):
 
 async def process_request(path, request_headers):
     if "Upgrade" not in request_headers:
-        return (websockets.http.HTTPStatus.OK, [("Content-Type", "text/plain")], b"FactoryFlow WebSocket Server is Running!\n")
+        return (200, [("Content-Type", "text/plain")], b"FactoryFlow WebSocket Server is Running!\n")
     return None
 
 async def main():
