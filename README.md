@@ -56,11 +56,8 @@ Por necessitar de conexões persistentes abertas de segundo plano, o backend Pyt
 2. Defina o diretório de execução como `/backend` e o comando de inicialização como `python main.py`.
 
 ### 3. Conexão entre os Ambientes
-Após o deploy do backend, atualize a URL pública gerada no arquivo `frontend/js/app.js`:
-```javascript
-// Substitua o endereço do localhost pela sua URL pública em produção:
-const wsUrl = "wss://seu-backend.onrender.com/ws";
-```
+O sistema já está totalmente integrado e pré-configurado no arquivo `app.js` para se comunicar com o backend de produção ativo no Render:
+`wss://factoryflow-mes.onrender.com/ws`
 
 ---
 
