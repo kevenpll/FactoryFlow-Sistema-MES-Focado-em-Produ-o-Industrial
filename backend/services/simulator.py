@@ -7,6 +7,10 @@ class Simulator:
     def __init__(self):
         self.active = False
         self.listeners = []
+        self.seconds_since_reset = 0
+        self.current_shift = "A"
+        self.shift_a_operators = ["João Silva", "Maria Santos", "Carlos Cunha", "Ana Costa", "Pedro Lima", "Lucas Mendes"]
+        self.shift_b_operators = ["Bruno Alves", "Julia Ribeiro", "Marcos Rocha", "Sandra Souza", "Felipe Melo", "Camila Lima"]
 
     def add_listener(self, queue: asyncio.Queue):
         self.listeners.append(queue)
@@ -23,6 +27,30 @@ class Simulator:
         self.active = True
         while self.active:
             machines = models.db_machines
+            
+            # Checa se é necessário reiniciar: a cada 5 minutos (300s) ou se alguma máquina atingir 1500 peças
+            should_reset = self.seconds_since_reset >= 300 or any(m.produced_parts >= 1500 for m in machines)
+            
+            if should_reset:
+                self.seconds_since_reset = 0
+                self.current_shift = "B" if self.current_shift == "A" else "A"
+                operators = self.shift_a_operators if self.current_shift == "A" else self.shift_b_operators
+                
+                for idx, machine in enumerate(machines):
+                    machine.produced_parts = 0
+                    machine.rejected_parts = 0
+                    machine.uptime_seconds = 0
+                    machine.downtime_seconds = 0
+                    if idx < len(operators):
+                        machine.operator = operators[idx]
+                        
+                await self.broadcast({
+                    "type": "system_log",
+                    "message": f"Troca de turno detectada! Operadores do Turno {self.current_shift} assumiram as máquinas e contadores foram resetados."
+                })
+            else:
+                self.seconds_since_reset += 1
+
             factory_update = {"type": "factory_update", "machines": [], "lines": []}
             
             line_stats = {}

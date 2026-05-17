@@ -200,6 +200,26 @@ async function initDashboard() {
                     updateModalData(activeMachine);
                 }
             }
+        } else if (data.type === 'system_log') {
+            const logContainer = document.getElementById('event-log');
+            if (logContainer) {
+                const time = new Date().toLocaleTimeString('pt-BR');
+                const logItem = `
+                    <div class="event-item system">
+                        <span class="event-time">${time}</span>
+                        <strong>[SISTEMA]</strong> ${data.message}
+                    </div>
+                `;
+                logContainer.insertAdjacentHTML('beforeend', logItem);
+                
+                // Limitar a 100 logs para evitar consumo de memória no DOM
+                while (logContainer.children.length > 100) {
+                    logContainer.removeChild(logContainer.firstChild);
+                }
+                
+                // Auto-scroll para acompanhar em tempo real
+                logContainer.scrollTop = logContainer.scrollHeight;
+            }
         }
     };
     
