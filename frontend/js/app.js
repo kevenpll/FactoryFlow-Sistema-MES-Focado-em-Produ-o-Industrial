@@ -176,7 +176,15 @@ async function initDashboard() {
         }
     });
 
-    const wsUrl = `ws://${window.location.hostname}:8050/ws`;
+    let wsUrl;
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        wsUrl = `ws://${window.location.hostname}:8050/ws`;
+    } else {
+        // Se estiver rodando o frontend pela Vercel, o WebSocket ainda tenta se conectar
+        // ao seu backend local (localhost) de forma automática.
+        // Quando hospedar seu backend em produção (Render/Railway), altere para a URL WSS:
+        wsUrl = `ws://localhost:8050/ws`;
+    }
     const ws = new WebSocket(wsUrl);
     
     let chartTime = 0;
