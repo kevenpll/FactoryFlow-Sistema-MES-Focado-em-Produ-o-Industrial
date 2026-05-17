@@ -1,5 +1,15 @@
 # FactoryFlow — Sistema MES Focado em Produção Industrial 🏭📊
 
+<p align="left">
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/FastAPI-0.104+-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5" />
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
+  <img src="https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" alt="Render" />
+</p>
+
 **FactoryFlow** é um sistema **MES (Manufacturing Execution System)** moderno e responsivo, desenvolvido para monitoramento, controle e auditoria de processos produtivos industriais em tempo real.
 
 ⚡ **Acesse a Demonstração Online**: [https://factory-flow-mes.vercel.app/](https://factory-flow-mes.vercel.app/)
@@ -11,6 +21,17 @@
 | 1. Painel de Operação (Dashboard) | 2. Histórico de Eventos (Logs) |
 | :---: | :---: |
 | ![Painel](assets/dashboard.png) | ![Logs](assets/logs.png) |
+
+---
+
+## ⚡ Funcionalidades Chave
+
+- **Monitoramento em Tempo Real ⏱️**: Acompanhamento dinâmico do estado das máquinas (Produzindo, Parada, Manutenção, Setup), velocidade operacional e operador logado.
+- **Motor de OEE Dinâmico 📊**: Cálculo segundo a segundo dos índices de OEE (*Disponibilidade, Performance e Qualidade*) para cada linha de produção.
+- **Gráficos Históricos Dinâmicos 📈**: Análise visual integrada usando **Chart.js** para monitorar a quantidade de peças produzidas por hora e a eficiência geral da planta.
+- **Simulador de Processo Industrial 🛠️**: Emulador assíncrono que gera eventos dinâmicos na fábrica, como oscilações de velocidade, paradas de linha e rejeição de peças para auditoria realista.
+- **Auditoria & Logs 📝**: Painel dedicado para visualização cronológica detalhada de todos os eventos gerados pela planta industrial.
+- **Design Premium Glassmorphism 🎨**: Interface futurista de alto nível visual, totalmente responsiva e projetada com Vanilla CSS, micro-animações dinâmicas e transições suaves.
 
 ---
 
