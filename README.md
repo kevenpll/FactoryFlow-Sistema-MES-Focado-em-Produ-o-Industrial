@@ -64,6 +64,4 @@ O sistema já está totalmente integrado e pré-configurado no arquivo `app.js` 
 ---
 
 ## 🎓 Conclusão
-O **FactoryFlow** demonstra competências sólidas em **Desenvolvimento Real-Time (WebSockets)**, **Simulações Orientadas a Eventos (Asyncio)**, **Cálculos Industriais (OEE)** e **UX/UI futurista premium de alta performance**.
-
-Sinta-se à vontade para utilizar o código e destacá-lo no seu portfólio de engenharia de software! 🚀
+O **FactoryFlow** demonstra competências sólidas em **Desenvolvimento Real-Time (WebSockets)**, **Simulações Orientadas a Eventos (Asyncio)**, **Cálculos Industriais (OEE)** e **UX/UI futurista premium de alta performance**.🚀
