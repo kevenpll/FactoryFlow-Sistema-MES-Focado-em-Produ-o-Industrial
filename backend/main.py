@@ -1,8 +1,29 @@
 import asyncio
 import json
 import websockets
+import websockets.http11
 import models
 from services.simulator import simulator_instance
+
+# Monkey-patch para suportar requisições HTTP HEAD/OPTIONS/POST de Health Check (como as do Render)
+# que por padrão quebram o parser interno de handshake do websockets.
+original_request_parse = websockets.http11.Request.parse
+
+@classmethod
+def patched_request_parse(cls, read_line):
+    def wrapped_read_line(*args, **kwargs):
+        gen = read_line(*args, **kwargs)
+        line = yield from gen
+        if line.startswith(b"HEAD "):
+            line = b"GET " + line[5:]
+        elif line.startswith(b"OPTIONS "):
+            line = b"GET " + line[8:]
+        elif line.startswith(b"POST "):
+            line = b"GET " + line[5:]
+        return line
+    return original_request_parse(wrapped_read_line)
+
+websockets.http11.Request.parse = patched_request_parse
 
 def init_db():
     if len(models.db_lines) == 0:
