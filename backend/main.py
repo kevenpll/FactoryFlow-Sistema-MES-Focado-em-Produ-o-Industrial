@@ -38,9 +38,12 @@ async def main():
     
     asyncio.create_task(simulator_instance.run())
     
+    import os
+    port = int(os.environ.get("PORT", 8050))
+    
     print("Iniciando FactoryFlow...")
-    async with websockets.serve(ws_handler, "0.0.0.0", 8050):
-        print("Servidor WebSocket rodando em ws://localhost:8050/ws")
+    async with websockets.serve(ws_handler, "0.0.0.0", port):
+        print(f"Servidor WebSocket rodando na porta {port}")
         print("Você pode abrir o frontend/index.html no navegador agora!")
         await asyncio.Future()
 
