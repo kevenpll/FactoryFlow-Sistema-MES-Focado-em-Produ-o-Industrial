@@ -33,6 +33,11 @@ async def ws_handler(websocket, path="/ws"):
     finally:
         simulator_instance.remove_listener(queue)
 
+async def process_request(path, request_headers):
+    if "Upgrade" not in request_headers:
+        return (websockets.http.HTTPStatus.OK, [("Content-Type", "text/plain")], b"FactoryFlow WebSocket Server is Running!\n")
+    return None
+
 async def main():
     init_db()
     
@@ -42,7 +47,7 @@ async def main():
     port = int(os.environ.get("PORT", 8050))
     
     print("Iniciando FactoryFlow...")
-    async with websockets.serve(ws_handler, "0.0.0.0", port):
+    async with websockets.serve(ws_handler, "0.0.0.0", port, process_request=process_request):
         print(f"Servidor WebSocket rodando na porta {port}")
         print("Você pode abrir o frontend/index.html no navegador agora!")
         await asyncio.Future()
