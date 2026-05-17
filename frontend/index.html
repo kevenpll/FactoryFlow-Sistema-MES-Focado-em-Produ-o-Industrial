@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FactoryFlow | MES Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="logo">
+            <span class="highlight">Factory</span>Flow <span class="badge">MES</span>
+        </div>
+        <div class="header-info">
+            <div class="time" id="clock">00:00:00</div>
+            <button class="btn-export" id="btn-export">Exportar CSV</button>
+            <div class="user-profile">
+                <div class="avatar">A</div>
+                <span>Admin</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <!-- Navegação entre Abas -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="dashboard-view">Painel de Operação</button>
+            <button class="tab-btn" data-tab="logs-view">Histórico de Eventos</button>
+        </div>
+
+        <!-- ABA 1: DASHBOARD -->
+        <div id="dashboard-view" class="tab-content active">
+            <section class="kpi-grid">
+                <div class="kpi-card">
+                    <h3>Produção Total</h3>
+                    <div class="value" id="kpi-total-prod">0</div>
+                    <div class="subtext">Peças</div>
+                </div>
+                <div class="kpi-card">
+                    <h3>OEE Médio</h3>
+                    <div class="value text-primary" id="kpi-oee">0%</div>
+                    <div class="subtext">Fábrica</div>
+                </div>
+                <div class="kpi-card">
+                    <h3>Máquinas Ativas</h3>
+                    <div class="value text-success" id="kpi-active-machines">0/0</div>
+                    <div class="subtext">Operando</div>
+                </div>
+                <div class="kpi-card">
+                    <h3>Rejeitos Totais</h3>
+                    <div class="value text-danger" id="kpi-total-rej">0</div>
+                    <div class="subtext">Peças</div>
+                </div>
+            </section>
+
+            <div class="main-content">
+                <section class="lines-section">
+                    <h2>Linhas de Produção</h2>
+                    <div id="lines-container">
+                        <!-- JS content -->
+                    </div>
+                </section>
+
+                <section class="machines-section">
+                    <h2>Status das Máquinas</h2>
+                    <div class="machines-grid" id="machines-container">
+                        <!-- JS content -->
+                    </div>
+                </section>
+
+                <section class="analytics-section">
+                    <h2>Desempenho Geral</h2>
+                    <div class="chart-container">
+                        <canvas id="productionChart"></canvas>
+                    </div>
+                    <div class="chart-container mt-2">
+                        <canvas id="oeeChart"></canvas>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- ABA 2: LOGS DE EVENTOS -->
+        <div id="logs-view" class="tab-content">
+            <section class="logs-full-section">
+                <h2>Histórico Geral de Eventos</h2>
+                <div class="logs-header-actions">
+                    <input type="text" id="log-search" placeholder="Filtrar eventos (ex: máquina, falha)...">
+                    <button class="btn-clear-logs" id="btn-clear-logs">Limpar Histórico</button>
+                </div>
+                <div class="event-log-container-full" id="event-log">
+                    <div class="event-item system">
+                        <span class="event-time">00:00:00</span>
+                        Sistema de auditoria FactoryFlow inicializado. Aguardando novos eventos...
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Detalhes da Máquina -->
+    <div id="machine-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" id="modal-close">&times;</span>
+            <h2 id="modal-machine-name">Detalhes da Máquina</h2>
+            <div class="modal-grid">
+                <div class="modal-col">
+                    <div class="modal-meta-box">
+                        <span class="meta-label">Operador Responsável</span>
+                        <strong class="meta-value" id="modal-operator">Nenhum</strong>
+                    </div>
+                    <div class="modal-meta-box mt-1">
+                        <span class="meta-label">Velocidade Atual</span>
+                        <strong class="meta-value" id="modal-speed">0 peças/seg</strong>
+                    </div>
+                    <div class="modal-meta-box mt-1">
+                        <span class="meta-label">Status Operacional</span>
+                        <strong class="meta-value" id="modal-status">Indefinido</strong>
+                    </div>
+                </div>
+                <div class="modal-col">
+                    <h3>Distribuição de Tempo</h3>
+                    <div class="modal-chart-wrapper">
+                        <canvas id="uptimeDowntimeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

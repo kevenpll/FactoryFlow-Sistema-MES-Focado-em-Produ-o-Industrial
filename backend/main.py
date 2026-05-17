@@ -1,0 +1,48 @@
+import asyncio
+import json
+import websockets
+import models
+from services.simulator import simulator_instance
+
+def init_db():
+    if len(models.db_lines) == 0:
+        models.db_lines.extend([
+            models.Line(id=1, name="Linha A"),
+            models.Line(id=2, name="Linha B"),
+            models.Line(id=3, name="Linha C")
+        ])
+        
+        models.db_machines.extend([
+            models.Machine(id=1, name="Extrusora 01", status="PRODUZINDO", speed=2.0, line_id=1, produced_parts=0, rejected_parts=0, uptime_seconds=0, downtime_seconds=0, operator="João Silva"),
+            models.Machine(id=2, name="Injetora 02", status="PARADA", speed=1.5, line_id=1, produced_parts=0, rejected_parts=0, uptime_seconds=0, downtime_seconds=0, operator="Maria Santos"),
+            models.Machine(id=3, name="Embaladora 01", status="PRODUZINDO", speed=3.0, line_id=2, produced_parts=0, rejected_parts=0, uptime_seconds=0, downtime_seconds=0, operator="Carlos Cunha"),
+            models.Machine(id=4, name="Misturador 03", status="MANUTENÇÃO", speed=0.5, line_id=2, produced_parts=0, rejected_parts=0, uptime_seconds=0, downtime_seconds=0, operator="Ana Costa"),
+            models.Machine(id=5, name="Prensa 05", status="PRODUZINDO", speed=1.0, line_id=3, produced_parts=0, rejected_parts=0, uptime_seconds=0, downtime_seconds=0, operator="Pedro Lima"),
+            models.Machine(id=6, name="Solda 02", status="SETUP", speed=1.2, line_id=3, produced_parts=0, rejected_parts=0, uptime_seconds=0, downtime_seconds=0, operator="Lucas Mendes"),
+        ])
+
+async def ws_handler(websocket, path="/ws"):
+    queue = asyncio.Queue()
+    simulator_instance.add_listener(queue)
+    try:
+        while True:
+            message = await queue.get()
+            await websocket.send(json.dumps(message))
+    except websockets.exceptions.ConnectionClosed:
+        pass
+    finally:
+        simulator_instance.remove_listener(queue)
+
+async def main():
+    init_db()
+    
+    asyncio.create_task(simulator_instance.run())
+    
+    print("Iniciando FactoryFlow...")
+    async with websockets.serve(ws_handler, "0.0.0.0", 8050):
+        print("Servidor WebSocket rodando em ws://localhost:8050/ws")
+        print("Você pode abrir o frontend/index.html no navegador agora!")
+        await asyncio.Future()
+
+if __name__ == "__main__":
+    asyncio.run(main())
