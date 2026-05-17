@@ -1,29 +1,11 @@
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.responses import HTMLResponse
 import asyncio
 import json
-import websockets
-import websockets.http11
 import models
 from services.simulator import simulator_instance
 
-# Monkey-patch para suportar requisições HTTP HEAD/OPTIONS/POST de Health Check (como as do Render)
-# que por padrão quebram o parser interno de handshake do websockets.
-original_request_parse = websockets.http11.Request.parse
-
-@classmethod
-def patched_request_parse(cls, read_line):
-    def wrapped_read_line(*args, **kwargs):
-        gen = read_line(*args, **kwargs)
-        line = yield from gen
-        if line.startswith(b"HEAD "):
-            line = b"GET " + line[5:]
-        elif line.startswith(b"OPTIONS "):
-            line = b"GET " + line[8:]
-        elif line.startswith(b"POST "):
-            line = b"GET " + line[5:]
-        return line
-    return original_request_parse(wrapped_read_line)
-
-websockets.http11.Request.parse = patched_request_parse
+app = FastAPI()
 
 def init_db():
     if len(models.db_lines) == 0:
@@ -42,36 +24,32 @@ def init_db():
             models.Machine(id=6, name="Solda 02", status="SETUP", speed=1.2, line_id=3, produced_parts=0, rejected_parts=0, uptime_seconds=0, downtime_seconds=0, operator="Lucas Mendes"),
         ])
 
-async def ws_handler(websocket, path="/ws"):
+@app.on_event("startup")
+async def startup_event():
+    init_db()
+    asyncio.create_task(simulator_instance.run())
+
+@app.get("/")
+@app.head("/")
+async def read_root():
+    return HTMLResponse("FactoryFlow WebSocket Server is Running!")
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
     queue = asyncio.Queue()
     simulator_instance.add_listener(queue)
     try:
         while True:
             message = await queue.get()
-            await websocket.send(json.dumps(message))
-    except websockets.exceptions.ConnectionClosed:
+            await websocket.send_json(message)
+    except WebSocketDisconnect:
         pass
     finally:
         simulator_instance.remove_listener(queue)
 
-async def process_request(path, request_headers):
-    if "Upgrade" not in request_headers:
-        return (200, [("Content-Type", "text/plain")], b"FactoryFlow WebSocket Server is Running!\n")
-    return None
-
-async def main():
-    init_db()
-    
-    asyncio.create_task(simulator_instance.run())
-    
+if __name__ == "__main__":
+    import uvicorn
     import os
     port = int(os.environ.get("PORT", 8050))
-    
-    print("Iniciando FactoryFlow...")
-    async with websockets.serve(ws_handler, "0.0.0.0", port, process_request=process_request):
-        print(f"Servidor WebSocket rodando na porta {port}")
-        print("Você pode abrir o frontend/index.html no navegador agora!")
-        await asyncio.Future()
-
-if __name__ == "__main__":
-    asyncio.run(main())
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
