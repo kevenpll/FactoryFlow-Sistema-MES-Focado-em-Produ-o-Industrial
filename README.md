@@ -33,14 +33,11 @@
 - **Auditoria & Logs 📝**: Painel dedicado para visualização cronológica detalhada de todos os eventos gerados pela planta industrial.
 - **Design Premium Glassmorphism 🎨**: Interface futurista de alto nível visual, totalmente responsiva e projetada com Vanilla CSS, micro-animações dinâmicas e transições suaves.
 
----
-
 ## 🛠️ Tecnologias Utilizadas
 
-- **Frontend**: HTML5, Vanilla CSS3 (Design Glassmorphism Cyber-Teal, responsivo com micro-animações), JavaScript Puro (ES6) para manipulação de DOM e WebSocket API, e **Chart.js** para gráficos dinâmicos de produção e OEE.
-- **Backend (Python 3.10+)**: Desenvolvido com **FastAPI** e **Uvicorn** (produção pronta e leve) para tratamento dinâmico de conexões WebSocket persistentes e compatibilidade de nuvem nativa de alta performance.
-- **Cálculo de OEE**: Motor matemático nativo que calcula dinamicamente a *Disponibilidade, Performance e Qualidade* de cada máquina segundo a segundo.
-- **Simulador Integrado**: Emulador físico industrial que gera desvios de processo, paradas, falhas operacionais, setups e geração de peças boas/rejeitos em tempo real.
+- **Frontend**: HTML5, Vanilla CSS3 (Glassmorphism), JavaScript Puro (ES6) e **Chart.js** para gráficos e métricas industriais dinâmicas.
+- **Backend**: Python 3.10+, **FastAPI** e **Uvicorn** para gerenciamento de conexões WebSocket assíncronas e robustas.
+- **Arquitetura**: Comunicação orientada a eventos assíncronos usando **Asyncio** de alto desempenho.
 
 ---
 
