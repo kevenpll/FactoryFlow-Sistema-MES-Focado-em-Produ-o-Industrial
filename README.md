@@ -2,6 +2,8 @@
 
 **FactoryFlow** é um sistema **MES (Manufacturing Execution System)** moderno e responsivo, desenvolvido para monitoramento, controle e auditoria de processos produtivos industriais em tempo real.
 
+⚡ **Acesse a Demonstração Online**: [https://factory-flow-mes.vercel.app/](https://factory-flow-mes.vercel.app/)
+
 ---
 
 ## 📸 Demonstração Visual
@@ -15,7 +17,7 @@
 ## 🛠️ Tecnologias Utilizadas
 
 - **Frontend**: HTML5, Vanilla CSS3 (Design Glassmorphism Cyber-Teal, responsivo com micro-animações), JavaScript Puro (ES6) para manipulação de DOM e WebSocket API, e **Chart.js** para gráficos dinâmicos de produção e OEE.
-- **Backend (Python 3.10+)**: Desenvolvido com **Asyncio** e **Websockets** (sem dependências externas pesadas) para comunicação em tempo real de altíssima latência e portabilidade total.
+- **Backend (Python 3.10+)**: Desenvolvido com **FastAPI** e **Uvicorn** (produção pronta e leve) para tratamento dinâmico de conexões WebSocket persistentes e compatibilidade de nuvem nativa de alta performance.
 - **Cálculo de OEE**: Motor matemático nativo que calcula dinamicamente a *Disponibilidade, Performance e Qualidade* de cada máquina segundo a segundo.
 - **Simulador Integrado**: Emulador físico industrial que gera desvios de processo, paradas, falhas operacionais, setups e geração de peças boas/rejeitos em tempo real.
 
@@ -23,11 +25,11 @@
 
 ## 🚀 Como Rodar o Projeto Localmente
 
-### 1. Iniciar o Backend (WebSocket)
+### 1. Iniciar o Backend (FastAPI + Uvicorn)
 No terminal, dentro do diretório do projeto:
 ```bash
 cd backend
-pip install websockets
+pip install -r requirements.txt
 python main.py
 ```
 *O servidor de sockets estará ativo na porta `8050`.*
